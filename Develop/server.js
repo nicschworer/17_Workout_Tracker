@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const logger = require("morgan");
 const path = require("path");
 const mongojs = require("mongojs");
-const Workout = require("./models/workout");
+const db = require("./models");
 
 
 
@@ -19,7 +19,7 @@ app.use(express.static("public"));
 const databaseUrl = "workouts_db";
 const collections = ["workouts"];
 
-const db = mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/custommethoddb", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
 
 // db.on("error", error => {
 //   console.log("Database Error:", error);
@@ -41,7 +41,7 @@ app.get("/stats", (req, res) => {
 // api routes
 
 app.post("/api/workouts", (req, res) => {
-  Workout.create(req.body)
+  db.Workout.create(req.body)
     .then(dbWorkouts => {
       res.json(dbWorkouts);
     })
@@ -52,18 +52,18 @@ app.post("/api/workouts", (req, res) => {
 
 app.put("/api/workouts/:id", ({ body, params }, res) => {
   console.log(body);
-  Workout.update({_id: mongojs.ObjectId(params.id)}, {$push: {exercise: body}})
+  console.log(params.id);
+  db.Workout.findByIdAndUpdate(params.id, {$push: {exercises: body}})
   .then(dbWorkouts => {
     res.json(dbWorkouts);
   })
   .catch(err => {
     res.status(400).json(err);
   })
-  console.log("im there");
 });
 
 app.get("/api/workouts", (req, res) => {
-  Workout.find({})
+  db.Workout.find({})
   .then(dbWorkouts => {
     res.json(dbWorkouts);
   })
@@ -73,7 +73,7 @@ app.get("/api/workouts", (req, res) => {
 });
 
 app.get("/api/workouts/range", (req, res) => {
-  Workout.find({})
+  db.Workout.find({})
   .then(dbWorkouts => {
     res.json(dbWorkouts);
   })
