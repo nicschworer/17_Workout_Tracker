@@ -116,5 +116,5 @@ app.delete("/api/workouts", ({ body }, res) => {
 
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log("app is listening on " + PORT);
+  console.log("app is listening");
 })
