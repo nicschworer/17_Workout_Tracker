@@ -22,7 +22,7 @@ const collections = ["workouts"];
 // mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
 
 mongoose.connect(
-  process.env.PORT || 'mongodb://localhost/workout',
+  process.env.MONGODB_URI || 'mongodb://localhost/workout',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
